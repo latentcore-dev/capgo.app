@@ -44,7 +44,7 @@ env:
 
 jobs:
   should_run:
-    runs-on: ubuntu-latest
+    runs-on: overline
     permissions:
       pull-requests: read
     outputs:
@@ -83,7 +83,7 @@ jobs:
   changes:
     needs: should_run
     if: needs.should_run.outputs.enabled == 'true'
-    runs-on: ubuntu-latest
+    runs-on: overline
     permissions:
       contents: read
       pull-requests: read
@@ -215,7 +215,7 @@ jobs:
   dead_code:
     needs: changes
     if: needs.changes.outputs.run_capgo == 'true' || needs.changes.outputs.run_cli == 'true' || needs.changes.outputs.run_notifications == 'true'
-    runs-on: ubuntu-latest
+    runs-on: overline
     timeout-minutes: 5
     name: Check dead code
     permissions:
@@ -237,7 +237,7 @@ jobs:
   notifications_package:
     needs: changes
     if: needs.changes.outputs.run_notifications == 'true'
-    runs-on: ubuntu-latest
+    runs-on: overline
     timeout-minutes: 5
     name: Notifications plugin package
     permissions:
@@ -265,7 +265,7 @@ jobs:
   lint_typecheck:
     needs: changes
     if: needs.changes.outputs.run_capgo == 'true'
-    runs-on: ubuntu-latest
+    runs-on: overline
     timeout-minutes: 5
     name: Lint and typecheck
     permissions:
@@ -312,7 +312,7 @@ jobs:
   test_unit:
     needs: changes
     if: needs.changes.outputs.run_capgo == 'true'
-    runs-on: ubuntu-latest
+    runs-on: overline
     timeout-minutes: 5
     name: Run unit tests
     permissions:
@@ -336,7 +336,7 @@ jobs:
   test_db:
     needs: changes
     if: needs.changes.outputs.run_capgo == 'true'
-    runs-on: ubuntu-24.04
+    runs-on: overline
     timeout-minutes: 5
     name: Run DB tests (Tinbase)
     permissions:
@@ -363,7 +363,7 @@ jobs:
   test_backend:
     needs: changes
     if: needs.changes.outputs.run_capgo == 'true'
-    runs-on: ubuntu-latest
+    runs-on: overline
     timeout-minutes: 10
     name: Run backend tests (shard ${{ matrix.shard }})
     permissions:
@@ -528,7 +528,7 @@ jobs:
   test_backend_plugin:
     needs: changes
     if: needs.changes.outputs.run_capgo == 'true'
-    runs-on: ubuntu-latest
+    runs-on: overline
     timeout-minutes: 10
     name: Run backend plugin tests (serial)
     permissions:
@@ -655,7 +655,7 @@ jobs:
   test_backend_sql:
     needs: changes
     if: needs.changes.outputs.run_capgo == 'true'
-    runs-on: ubuntu-latest
+    runs-on: overline
     timeout-minutes: 10
     name: Run backend SQL checks
     permissions:
@@ -761,7 +761,7 @@ jobs:
   test_cloudflare:
     needs: changes
     if: needs.changes.outputs.run_capgo == 'true'
-    runs-on: ubuntu-latest
+    runs-on: overline
     timeout-minutes: 10
     name: Run Cloudflare Workers tests (shard ${{ matrix.shard }})
     permissions:
@@ -902,7 +902,7 @@ jobs:
   test_cloudflare_plugin:
     needs: changes
     if: needs.changes.outputs.run_capgo == 'true'
-    runs-on: ubuntu-latest
+    runs-on: overline
     timeout-minutes: 10
     name: Run Cloudflare plugin tests (serial)
     permissions:
@@ -1033,7 +1033,7 @@ jobs:
   test_playwright:
     needs: changes
     if: needs.changes.outputs.run_capgo == 'true'
-    runs-on: ubuntu-latest
+    runs-on: overline
     timeout-minutes: 10
     name: Run Playwright tests (shard ${{ matrix.shard }})
     permissions:
@@ -1211,7 +1211,7 @@ jobs:
     needs: changes
     if: needs.changes.outputs.run_cli == 'true'
     name: CLI on Node.js ${{ matrix.node-version }}
-    runs-on: ubuntu-latest
+    runs-on: overline
     timeout-minutes: 5
     strategy:
       fail-fast: false
@@ -1241,7 +1241,7 @@ jobs:
     needs: changes
     if: needs.changes.outputs.run_cli == 'true'
     name: Check for typos (CLI)
-    runs-on: ubuntu-latest
+    runs-on: overline
     timeout-minutes: 5
     steps:
       - name: Setup Node.js
@@ -1260,7 +1260,7 @@ jobs:
     needs: changes
     if: needs.changes.outputs.run_cli == 'true'
     name: CLI create valid zip (Linux)
-    runs-on: ubuntu-latest
+    runs-on: overline
     timeout-minutes: 5
     steps:
       - name: Setup Node.js
@@ -1336,7 +1336,7 @@ jobs:
     needs: [changes, cli_create_valid_zip_linux, cli_check_posix_paths_windows]
     if: needs.changes.outputs.run_cli == 'true'
     name: CLI POSIX paths (Unix)
-    runs-on: ubuntu-latest
+    runs-on: overline
     timeout-minutes: 5
     steps:
       - name: Setup Node.js
@@ -1465,7 +1465,7 @@ jobs:
     needs: [changes, cli_check_posix_paths_unix, cli_check_posix_paths_macos]
     if: needs.changes.outputs.run_cli == 'true'
     name: CLI POSIX paths final
-    runs-on: ubuntu-latest
+    runs-on: overline
     timeout-minutes: 5
     steps:
       - name: Setup Node.js
@@ -1478,7 +1478,7 @@ jobs:
   cli_tests:
     needs: changes
     if: needs.changes.outputs.run_cli == 'true'
-    runs-on: ubuntu-latest
+    runs-on: overline
     name: Run CLI tests
     timeout-minutes: 5
     steps:
@@ -1516,7 +1516,7 @@ jobs:
     # CLI integration tests exercise the backend edge functions, so backend-only
     # changes must run them too (they are excluded from the backend shards).
     if: needs.changes.outputs.run_cli == 'true' || needs.changes.outputs.run_capgo == 'true'
-    runs-on: ubuntu-latest
+    runs-on: overline
     timeout-minutes: 10
     name: Run Capgo CLI integration tests
     permissions:
@@ -1621,7 +1621,7 @@ jobs:
   published_cli_contract:
     needs: changes
     if: needs.changes.outputs.run_cli == 'true' || needs.changes.outputs.run_capgo == 'true'
-    runs-on: ubuntu-latest
+    runs-on: overline
     timeout-minutes: 15
     name: CRITICAL — Published CLI / do not break old CLI
     permissions:
@@ -1746,7 +1746,7 @@ jobs:
       - cli_capgo_integration
       - published_cli_contract
     if: ${{ always() && github.event_name == 'pull_request' && needs.changes.result == 'success' && needs.changes.outputs.release_fingerprint != '' && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') }}
-    runs-on: ubuntu-latest
+    runs-on: overline
     timeout-minutes: 5
     name: Record release test result
     permissions: {}
